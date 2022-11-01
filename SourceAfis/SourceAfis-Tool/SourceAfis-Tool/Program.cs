@@ -1,4 +1,5 @@
 ﻿using SourceAFIS;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace MyNamespace
@@ -20,25 +21,25 @@ namespace MyNamespace
 
            
 
-            if(args.Length < 4)
+            if(args.Length < 3)
             {
                 printUsageInfo(args);
                 return -1;
             }
 
             int res = 0;
-            switch (args[1])
+            switch (args[0])
             {
                 case "-e":
-                    res = extraction(args[2], args[3]);
+                    res = extraction(args[1], args[2]);
                     break;
 
                 case "-m":
-                    if(args.Length < 5)
+                    if(args.Length < 4)
                     {
                         goto default;
                     }
-                    res = matching(args[2], args[3], args[4], out double score);
+                    res = matching(args[1], args[2], args[3], out double score);
                     break;
 
                 default:
@@ -127,15 +128,8 @@ namespace MyNamespace
 
         static void printUsageInfo(string[] args)
         {
-            string path;
-            if (args.Length > 0)
-            {
-                path = args[0];
-            }
-            else
-            {
-                path = System.Reflection.Assembly.GetEntryAssembly().Location;
-            }
+            string path = Process.GetCurrentProcess().ProcessName+".exe";
+
             Console.WriteLine(
                 "Fingerprint Extraction\n" +
                 $"Usage: {path} -e <in_image.png> <out_tmp.cbor>\n" +
