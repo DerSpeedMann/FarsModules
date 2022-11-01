@@ -1,4 +1,5 @@
 ﻿using SourceAFIS;
+using System.Text.Json;
 
 namespace MyNamespace
 {
@@ -10,9 +11,10 @@ namespace MyNamespace
             #if DEBUG
             args = new string[] {
                 System.Reflection.Assembly.GetEntryAssembly().Location,
-                "-e",
-                @"matching.png",
-                "template.cbor"
+                "-m",
+                "matching.png",
+                "template.cbor",
+                "score.json"
             };
             #endif
 
@@ -32,23 +34,17 @@ namespace MyNamespace
                     break;
 
                 case "-m":
-                    res = matching(args[2], args[3], out double score);
+                    if(args.Length < 5)
+                    {
+                        goto default;
+                    }
+                    res = matching(args[2], args[3], args[4], out double score);
                     break;
 
                 default:
                     printUsageInfo(args);
                     return -1;
             };
-
-           
-
-            if(res != 0)
-            {
-                return res;
-            }
-
-
-            //TODO: save score
 
             return res;
         }
@@ -82,7 +78,7 @@ namespace MyNamespace
             return 0;
         }
 
-        static int matching(string imagePath, string templatePath, out double score)
+        static int matching(string imagePath, string templatePath, string outputPath, out double score)
         {
             FingerprintTemplate candidate, probe;
             score = 0;
@@ -110,23 +106,47 @@ namespace MyNamespace
             }
 
             score = new FingerprintMatcher(probe).Match(candidate);
-
+            
+            
             Console.WriteLine($"score: {score}");
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(score);
+                File.WriteAllText(outputPath, jsonString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error 4: Could not serialize or save result! ({e.GetType()})");
+                return 4;
+            }
+           
+
+            
             return 0;
         }
 
         static void printUsageInfo(string[] args)
         {
+            string path;
+            if (args.Length > 0)
+            {
+                path = args[0];
+            }
+            else
+            {
+                path = System.Reflection.Assembly.GetEntryAssembly().Location;
+            }
             Console.WriteLine(
                 "Fingerprint Extraction\n" +
-                $"Usage: {args[0]} -e <in_image.png> <out_tmp.cbor>\n" +
+                $"Usage: {path} -e <in_image.png> <out_tmp.cbor>\n" +
                 "where <in_image.png> is the grayscale figerprint image\n" +
                 "<out_tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n\n" +
 
                 "Fingerprint Matching\n" +
-                $"Usage: {args[0]} -m <in_image.png> <in_tmp.cbor>\n" +
-                "where <image.png> is the grayscale figerprint image\n" +
-                "<tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n");
+                $"Usage: {path} -m <in_image.png> <in_tmp.cbor> <out_score.json>\n" +
+                "where <in_image.png> is the grayscale figerprint image\n" +
+                "<in_tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n" +
+                "<out_score.json> is the json serialized score file");
         }
     }
 }
