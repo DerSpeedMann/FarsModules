@@ -1,0 +1,15 @@
+[submodule "Adafruit/Adafruit-Fingerprint-Sensor-Library"]
+	path = Adafruit/Adafruit-Fingerprint-Sensor-Library
+	url = https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library.git
+[submodule "SourceAfis/sourceafis-java"]
+	path = SourceAfis/sourceafis-java
+	url = https://github.com/robertvazan/sourceafis-java.git
+[submodule "SourceAfis/sourceafis-net"]
+	path = SourceAfis/sourceafis-net
+	url = https://github.com/robertvazan/sourceafis-net.git
+[submodule "SourceAfis/sourceafis-visualization-java"]
+	path = SourceAfis/sourceafis-visualization-java
+	url = https://github.com/robertvazan/sourceafis-visualization-java.git
+[submodule "FingerJet/FingerJetFXOSE"]
+	path = FingerJet/FingerJetFXOSE
+	url = https://github.com/FingerJetFXOSE/FingerJetFXOSE.git
