@@ -52,37 +52,7 @@ namespace MyNamespace
 
         static int extraction(string imagePath, string templatePath)
         {
-            FingerprintTemplate probe;
-
-            try
-            {
-                probe = new FingerprintTemplate(
-                    new FingerprintImage(File.ReadAllBytes(imagePath))
-                );
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error 1: Could not load Image! ({e.GetType()})");
-                return 1;
-            }
-            try
-            {
-                File.WriteAllBytes(templatePath, probe.ToByteArray());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error 2: Could not write Template! ({e})");
-                return 2;
-            }
-
-            return 0;
-        }
-
-        static int matching(string imagePath, string templatePath, string outputPath, out double score)
-        {
-            FingerprintTemplate candidate, probe;
-            score = 0;
+            FingerprintTemplate candidate;
 
             try
             {
@@ -98,11 +68,39 @@ namespace MyNamespace
             }
             try
             {
-                probe = new FingerprintTemplate(File.ReadAllBytes(templatePath));
+                File.WriteAllBytes(templatePath, candidate.ToByteArray());
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error 3: Could not load Template! ({e.GetType()})");
+                Console.WriteLine($"Error 2: Could not write Template! ({e})");
+                return 2;
+            }
+
+            return 0;
+        }
+
+        static int matching(string probeTemplatePath, string candidateTemplatePath, string outputPath, out double score)
+        {
+            FingerprintTemplate candidate, probe;
+            score = 0;
+
+            try
+            {
+                probe = new FingerprintTemplate(File.ReadAllBytes(probeTemplatePath));
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error 1: Could not load Template to match! ({e.GetType()})");
+                return 1;
+            }
+            try
+            {
+                candidate = new FingerprintTemplate(File.ReadAllBytes(candidateTemplatePath));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error 3: Could not load Template to match against! ({e.GetType()})");
                 return 3;
             }
 
@@ -137,9 +135,9 @@ namespace MyNamespace
                 "<out_tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n\n" +
 
                 "Fingerprint Matching\n" +
-                $"Usage: {path} -m <in_image.png> <in_tmp.cbor> <out_score.json>\n" +
-                "where <in_image.png> is the grayscale figerprint image\n" +
-                "<in_tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n" +
+                $"Usage: {path} -m <in_probeTmp.cbor> <in_candidateTmp.cbor> <out_score.json>\n" +
+                "where <in_probeTmp.cbor> is the serialized figerprint template to check (RFC 8949 Concise Binary Object Representation)\n" +
+                "<in_candidateTmp.cbor> is the serialized figerprint template file to check against\n" +
                 "<out_score.json> is the json serialized score file");
         }
     }
