@@ -126,18 +126,18 @@ namespace MyNamespace
 
         static void printUsageInfo(string[] args)
         {
-            string path = Process.GetCurrentProcess().ProcessName+".exe";
+            string name = Process.GetCurrentProcess().ProcessName+".exe";
 
             Console.WriteLine(
                 "Fingerprint Extraction\n" +
-                $"Usage: {path} -e <in_image.png> <out_tmp.cbor>\n" +
-                "where <in_image.png> is the grayscale figerprint image\n" +
+                $"Usage: {name} -e <in_image.png> <out_tmp.cbor>\n" +
+                "where <in_image.png> is the grayscale fingerprint image\n" +
                 "<out_tmp.cbor> is the serialized template file (RFC 8949 Concise Binary Object Representation)\n\n" +
 
                 "Fingerprint Matching\n" +
-                $"Usage: {path} -m <in_probeTmp.cbor> <in_candidateTmp.cbor> <out_score.json>\n" +
-                "where <in_probeTmp.cbor> is the serialized figerprint template to check (RFC 8949 Concise Binary Object Representation)\n" +
-                "<in_candidateTmp.cbor> is the serialized figerprint template file to check against\n" +
+                $"Usage: {name} -m <in_probeTmp.cbor> <in_candidateTmp.cbor> <out_score.json>\n" +
+                "where <in_probeTmp.cbor> is the serialized fingerprint template to check (RFC 8949 Concise Binary Object Representation)\n" +
+                "<in_candidateTmp.cbor> is the serialized fingerprint template file to check against\n" +
                 "<out_score.json> is the json serialized score file");
         }
     }
