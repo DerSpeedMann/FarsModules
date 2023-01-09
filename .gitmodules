@@ -13,3 +13,6 @@
 [submodule "FingerJet/FingerJetFXOSE"]
 	path = FingerJet/FingerJetFXOSE
 	url = https://github.com/FingerJetFXOSE/FingerJetFXOSE.git
+[submodule "SourceAfis/sourceafis-transparency-java"]
+	path = SourceAfis/sourceafis-transparency-java
+	url = https://github.com/robertvazan/sourceafis-transparency-java.git
