@@ -58,6 +58,16 @@
             <version>3.17.1</version>
         </dependency>
         <dependency>
+            <groupId>com.machinezoo.sourceafis</groupId>
+            <artifactId>sourceafis-visualization</artifactId>
+            <version>0.8.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.machinezoo.sourceafis</groupId>
+            <artifactId>sourceafis-transparency</artifactId>
+            <version>0.13.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.5</version>
